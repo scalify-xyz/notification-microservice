@@ -1,7 +1,7 @@
 
-# boilerplate-microservice
+# notification-microservice
 
-A boilerplate for creating microservices using **TypeScript**, **Node.js**. Includes **Docker Compose** configuration for easy database setup.
+A scalable notification microservice developed with **TypeScript**, **Node.js**. For sending E-Mail/SMS.
 
 
 ## Installation
@@ -9,8 +9,8 @@ A boilerplate for creating microservices using **TypeScript**, **Node.js**. Incl
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/username/boilerplate-microservice.git
-cd boilerplate-microservice
+git clone https://github.com/username/notification-microservice.git
+cd notification-microservice
 ```
 
 1. Setup Husky:
