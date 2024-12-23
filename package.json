@@ -36,8 +36,11 @@
     "typescript-eslint": "^8.17.0"
   },
   "dependencies": {
+    "amqplib": "^0.10.5",
     "body-parser": "^1.19.1",
+    "dotenv": "^16.4.7",
     "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.16",
     "reflect-metadata": "^0.1.13"
   }
 }
