@@ -1,6 +1,7 @@
-import { UseCase } from "src/application/interfaces/usecase.interface";
-
 import { UserCreatedEvent } from "@domain/events/user-created.event";
+
+import { UseCase } from "@application/interfaces/usecase.interface";
+
 
 import { ISendEmailProvider } from "@infra/interfaces/providers/send-email.interface.provider";
 

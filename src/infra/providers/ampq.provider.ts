@@ -1,11 +1,14 @@
-import amqp, { Channel, Message, Connection } from "amqplib";
-
-import { EventMap } from "src/application/events/map.event";
+import { Channel, Message, Connection, connect } from "amqplib";
 
 import { UserCreatedEvent } from "@domain/events/user-created.event";
 
+import { EventMap } from "@application/events/map.event";
 
-export class RabbitMQListener {
+import { IRabbitMQProvider } from "@infra/interfaces/providers/rabbitmq.interface.provider";
+
+
+
+export class AmpqProvider implements IRabbitMQProvider {
   private channel: Channel;
   private connection: Connection;
 
@@ -15,11 +18,11 @@ export class RabbitMQListener {
   ) { }
 
   public static create(eventMap: EventMap, uri: string) {
-    return new RabbitMQListener(eventMap, uri);
+    return new AmpqProvider(eventMap, uri);
   }
 
   public async connect(queue: string): Promise<void> {
-    this.connection = await amqp.connect(this.uri, { heartbeat: 10 });
+    this.connection = await connect(this.uri, { heartbeat: 10 });
     this.connection.on("error", (err) => console.error("RabbitMQ connection error:", err));
     this.connection.on("close", () => console.warn("RabbitMQ connection closed!"));
     this.channel = await this.connection.createChannel();
@@ -31,17 +34,14 @@ export class RabbitMQListener {
 
   public listen(queue: string): void {
     this.channel.consume(queue, (msg: Message | null) => {
-      if (msg) {
-        const event = JSON.parse(msg.content.toString()) as UserCreatedEvent;
+      if (msg && msg.content && msg.fields.routingKey) {
+        const event: UserCreatedEvent = JSON.parse(msg.content.toString());
 
         const useCase = this.eventMap.getUseCase(msg.fields.routingKey);
 
-        if (useCase) {
-          useCase.execute(event).catch((err) => {
-            console.error("Error handling event:", err);
-          });
-        }
-
+        useCase?.execute(event).catch((err) => {
+          console.error("Error handling event:", err);
+        });
         this.channel.ack(msg);
       }
     });

@@ -37,7 +37,7 @@ docker-compose up --build
 Start the microservice:
 
 ```bash
-npm run dev
+npm run start:dev
 ```
 
 The service will be available at `http://localhost:3000`.

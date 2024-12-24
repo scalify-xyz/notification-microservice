@@ -7,6 +7,6 @@ export class EmailProvider implements ISendEmailProvider {
     }
 
     async sendEmail(to: string, subject: string, body: string): Promise<void> {
-        console.log(`Sending email to: ${to}, Subject: ${subject}`);
+        console.log(`Sending email to: ${to}, Subject: ${subject}\nbody: ${body}`);
     }
 }

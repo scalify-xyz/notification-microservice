@@ -10,14 +10,11 @@ import { SendEmailNotificationUsecase } from "../usecases/send-email-confirmatio
 export class EventMap {
   private handlers: Map<string, UseCase<unknown, unknown>> = new Map();
 
-  constructor(
-    private readonly emailProvider: ISendEmailProvider,
-  ) {
-    this.register(emailProvider);
-  }
 
-  public static create(emailProvider: ISendEmailProvider) {
-    return new EventMap(emailProvider);
+  public static create(emailProvider: ISendEmailProvider): EventMap {
+    const eventMap = new EventMap();
+    eventMap.register(emailProvider);
+    return eventMap;
   }
 
 
