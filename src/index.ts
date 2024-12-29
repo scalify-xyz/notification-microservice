@@ -1,16 +1,20 @@
-import "dotenv/config";
-
 import { EventMap } from "@application/events/map.event";
 
 import { AmpqProvider } from "@infra/providers/ampq.provider";
 import { EmailProvider } from "@infra/providers/node-mailer.provider";
 
 import { RABBITMQ_USER_CREATED_QUEUE_NAME } from "@shared/constants/rabbit-mq.constants";
-import SecretsManager from "@shared/utils/secrets-manager";
+import AWSSecretsManager from "@shared/utils/aws-secrets-manager";
 
 
 async function start(): Promise<void> {
-  await SecretsManager.create();
+  await AWSSecretsManager.create({
+    region: "sa-east-1",
+    secretsMap: {
+      "RABBITMQ_URL": "rabbitmq/production/scalableecommerce",
+      "JWT_SECRET": "jwt/production/scalableecommerce", 
+    },
+  });
 
   const emailProvider = EmailProvider.create();
   const eventMap = EventMap.create(emailProvider);
