@@ -10,13 +10,11 @@ import { SendEmailNotificationUsecase } from "../usecases/send-email-confirmatio
 export class EventMap {
   private handlers: Map<string, UseCase<unknown, unknown>> = new Map();
 
-
   public static create(emailProvider: ISendEmailProvider): EventMap {
     const eventMap = new EventMap();
     eventMap.register(emailProvider);
     return eventMap;
   }
-
 
   private register(emailProvider: ISendEmailProvider): void {
     this.handlers.set(RABBITMQ_USER_CREATED_QUEUE_NAME, SendEmailNotificationUsecase.create(emailProvider));
