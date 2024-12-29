@@ -6,8 +6,6 @@ import { EventMap } from "@application/events/map.event";
 
 import { IRabbitMQProvider } from "@infra/interfaces/providers/rabbitmq.interface.provider";
 
-
-
 export class AmpqProvider implements IRabbitMQProvider {
   private channel: Channel;
   private connection: Connection;
@@ -22,29 +20,32 @@ export class AmpqProvider implements IRabbitMQProvider {
   }
 
   public async connect(queue: string): Promise<void> {
-    this.connection = await connect(this.uri, { heartbeat: 10 });
-    this.connection.on("error", (err) => console.error("RabbitMQ connection error:", err));
-    this.connection.on("close", () => console.warn("RabbitMQ connection closed!"));
-    this.channel = await this.connection.createChannel();
-
-    this.channel.assertQueue(queue, { durable: true });
-    this.listen(queue);
-    console.log("RabbitMQ Connected!");
+    try {
+      this.connection = await connect(this.uri, { heartbeat: 10 });
+      this.channel = await this.connection.createChannel();
+      await this.channel.assertQueue(queue, { durable: true });
+      this.listen(queue);
+      console.log("RabbitMQ Connected!");
+    } catch (error) {
+      console.error("RabbitMQ connection Failed", error);
+    }
   }
 
   public listen(queue: string): void {
     this.channel.consume(queue, (msg: Message | null) => {
       if (msg && msg.content && msg.fields.routingKey) {
-        const event: UserCreatedEvent = JSON.parse(msg.content.toString());
-
-        const useCase = this.eventMap.getUseCase(msg.fields.routingKey);
-
-        useCase?.execute(event).catch((err) => {
-          console.error("Error handling event:", err);
-        });
-        this.channel.ack(msg);
+        try {
+          const event: UserCreatedEvent = JSON.parse(msg.content.toString());
+          const useCase = this.eventMap.getUseCase(msg.fields.routingKey);
+          useCase?.execute(event).catch((err) => {
+            console.error("Error handling event:", err);
+          });
+          this.channel.ack(msg);
+        } catch (error) {
+          console.error("Error processing message:", error);
+          if (msg) this.channel.nack(msg);
+        }
       }
     });
   }
 }
-

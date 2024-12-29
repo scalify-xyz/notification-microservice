@@ -3,6 +3,15 @@
 
 A scalable notification microservice developed with **TypeScript**, **Node.js**. For sending E-Mail/SMS.
 
+## Project Structure
+
+```
+src/
+├── Infra/        # Database implementation and external communication
+├── Application/  # Application logic and use cases
+├── Domain/       # Entities and domain rules
+├── Shared/       # Utility Shared functions and helpers
+```
 
 ## Installation
 

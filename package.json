@@ -38,6 +38,7 @@
     "typescript-eslint": "^8.17.0"
   },
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.716.0",
     "amqplib": "^0.10.5",
     "body-parser": "^1.19.1",
     "dotenv": "^16.4.7",
