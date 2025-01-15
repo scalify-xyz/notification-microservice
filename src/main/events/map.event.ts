@@ -1,10 +1,11 @@
+import { UseCase } from "@application/interfaces/usecase.interface";
+import { SendEmailNotificationUsecase } from "@application/usecases/send-email-confirmation/send-email-confirmation.usecase";
+
 import { IJsonWebTokenProvider } from "@infra/interfaces/providers/jsonwebtoken.interface.provider";
 import { ISendEmailProvider } from "@infra/interfaces/providers/send-email.interface.provider";
 
 import { RABBITMQ_USER_CREATED_QUEUE_NAME } from "@shared/constants/rabbit-mq.constants";
 
-import { UseCase } from "../interfaces/usecase.interface";
-import { SendEmailNotificationUsecase } from "../usecases/send-email-confirmation/send-email-confirmation.usecase";
 
 export class EventMap {
   private handlers: Map<string, UseCase<unknown, unknown>> = new Map();

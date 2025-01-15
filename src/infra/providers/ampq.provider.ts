@@ -2,9 +2,10 @@ import { Channel, Message, Connection, connect } from "amqplib";
 
 import { UserCreatedEvent } from "@domain/events/user-created.event";
 
-import { EventMap } from "@application/events/map.event";
-
 import { IRabbitMQProvider } from "@infra/interfaces/providers/rabbitmq.interface.provider";
+
+import { EventMap } from "@main/events/map.event";
+
 
 export class AmpqProvider implements IRabbitMQProvider {
   private channel: Channel;
