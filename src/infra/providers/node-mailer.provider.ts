@@ -9,8 +9,6 @@ export class EmailProvider implements ISendEmailProvider {
     }
 
     async sendEmail(to: string, subject: string, body: string): Promise<void> {
-        console.log(`Start sending email to: ${to}, Subject: ${subject}`);
-
         const from = process.env.SMTP_PROVIDER_USER;
 
         const transporter = await nodemailer.createTransport({

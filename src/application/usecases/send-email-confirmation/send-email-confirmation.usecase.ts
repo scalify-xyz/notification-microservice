@@ -21,7 +21,7 @@ export class SendEmailNotificationUsecase implements UseCase<unknown, unknown> {
     public async execute({ id, name, email }: UserCreatedEvent): Promise<void> {
         const subject = "Confirm your email";
         const token = this.jwtProvider.sign({ id, email }, process.env.JWT_SECRET);
-        const body = `Hello ${name}, thanks for signing up! <a href="testeurl.com/auth/confirm-signup">confirm your email</a>`;
+        const body = `Hello ${name}, thanks for signing up! <a href="testeurl.com/auth/confirm-signup?token=${token}">confirm your email</a>`;
 
         await this.emailProvider.sendEmail(email, subject, body);
     }
