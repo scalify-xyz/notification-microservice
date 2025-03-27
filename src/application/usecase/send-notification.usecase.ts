@@ -7,14 +7,18 @@ import { NotificationRepository } from "@infrastructure/repositories/notificatio
 
 
 export class SendNotificationUseCase {
-  private notificationRepository = new NotificationRepository();
   private emailNotificationService = new EmailNotificationService();
 
-  async execute(data: NotificationModel): Promise<NotificationEntity> {
+  private constructor(private readonly notificationRepository: NotificationRepository) {}
+  
+  static create(notificationRepository: NotificationRepository) {
+    return new SendNotificationUseCase(notificationRepository);
+  }
 
-    await this.emailNotificationService.send(data.userId, data.message);
+  async execute(data: NotificationModel): Promise<NotificationEntity> {
+    await this.emailNotificationService.execute(data.userId, data.message);
     
-    const notification = await this.notificationRepository.save(data);
+    const notification = await this.notificationRepository.execute(data);
     return new NotificationEntity(notification);
   }
 }

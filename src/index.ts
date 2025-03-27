@@ -1,6 +1,6 @@
-import { AWSSecretsManager, RabbitMQProvider } from "@scalify/shared-microservice";
+import { AWSSecretsManager } from "@scalify/shared-microservice";
 
-import { NotificationConsumer } from "@infrastructure/consumers/notification.consumer";
+import { NotificationFactory } from "@main/factories/notification.factory";
 
 async function start(): Promise<void> {
   await AWSSecretsManager.create({
@@ -16,10 +16,7 @@ async function start(): Promise<void> {
   });
 
   try {
-    const rabbitMQProvider = await RabbitMQProvider.create(process.env.RABBITMQ_URL);
-    const consumer = NotificationConsumer.create(rabbitMQProvider);
-    consumer.start();
-
+    NotificationFactory.create();
     console.log("Notification service running!");
   } catch (error) {
     console.error("Fatal error starting service:", error);
