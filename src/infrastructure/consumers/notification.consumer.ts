@@ -1,8 +1,8 @@
 
+import { RabbitMQProvider } from "@scalify/shared-microservice";
+
 import { SendNotificationUseCase } from "@application/usecase/send-notification.usecase";
 
-import { RabbitMQProvider } from "@infrastructure/providers/rabbitmq.provider";
-// import { RabbitMQProvider } from "@scalify/shared-microservice";
 
 
 export class NotificationConsumer {
@@ -18,8 +18,9 @@ export class NotificationConsumer {
   async start() {
     await this.rabbitMqProvider.consume(this.queue, async (message) => {
       try {
-        // const data = JSON.parse(message.toString());
-        // await this.sendNotificationUseCase.execute(data);
+        const typedMessage = message as { status: string };
+        console.log("[DEBUG]", typedMessage);
+        // await this.sendNotificationUseCase.execute(typedMessage);
       } catch (error) {
         console.error("Erro ao processar mensagem:", error);
       }

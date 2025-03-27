@@ -8,17 +8,11 @@ import { NotificationRepository } from "@infrastructure/repositories/notificatio
 
 export class SendNotificationUseCase {
   private notificationRepository = new NotificationRepository();
+  private emailNotificationService = new EmailNotificationService();
 
   async execute(data: NotificationModel): Promise<NotificationEntity> {
 
-
-    let notificationService;
-
-    if (data.type ==="email") {
-      notificationService = new EmailNotificationService();
-    }
-
-    await notificationService.send(data.userId, data.message);
+    await this.emailNotificationService.send(data.userId, data.message);
     
     const notification = await this.notificationRepository.save(data);
     return new NotificationEntity(notification);
