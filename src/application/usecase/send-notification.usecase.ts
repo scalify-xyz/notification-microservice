@@ -1,8 +1,9 @@
+import { NotificationModel } from "@scalify/shared-microservice";
+
 import { NotificationEntity } from "@domain/entities/notification.entity";
 
 import { EmailNotificationService } from "@application/services/email-notification.service";
 
-import { NotificationModel } from "@infrastructure/models/notification.model";
 import { NotificationRepository } from "@infrastructure/repositories/notification.repository";
 
 

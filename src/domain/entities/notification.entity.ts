@@ -1,4 +1,4 @@
-import { NotificationModel } from "@infrastructure/models/notification.model";
+import { NotificationModel } from "@scalify/shared-microservice";
 
 export class NotificationEntity {
     id: string;

@@ -26,9 +26,8 @@ export class NotificationConsumer {
   private async execute() {
     await this.rabbitMqProvider.consume(this.queue, async (message) => {
       try {
-        const typedMessage = message;
-        console.log("[DEBUG]", typedMessage);
-        await this.sendNotificationUseCase.execute({ message: "USER_CREATED", provider: "email", userId: "12" });
+        console.log("[DEBUG]", message);
+        await this.sendNotificationUseCase.execute(message);
       } catch (error) {
         console.error("Erro ao processar mensagem:", error);
       }
